@@ -1,0 +1,54 @@
+vi:
+创建文件xx.py
+：是命令模式：
+	：q退出
+	:set nu 显示行列
+	:set ts=4 制表键变成4格
+	：syntax on高亮语法
+	：wq保存退出 或者 ZZ
+	dd 删除一行
+	u 撤销
+	yy复制
+	p粘贴
+	G 最后一行   行号 G 去到指定的行
+	GG首行
+	ct + y/e上下滚动
+	ct + f/b上下翻页
+	/ 内容 表示查找内容 然后按n表示下一个
+	如果使用正则表达式 那么格式为：/\d\{3} 
+	:1,$s/func/function/gi ——替换  从第一行到最后一行把func替换function g全局模式i忽略大小写c是否确定模式e不报错模式 
+	自定义快捷键 转换成一个代码：
+	:abbr main（快捷键） if __name__ == '__main__':（代码）
+
+在外面运行的话直接python xxx.py
+回到上个代码的话 ！v
+创建配置文件 vi .vimrc 把需要的命令写进去 就可以避免每次都写
+高级技巧：
+录制宏 q+a或者bcd（表示录制的名字为a或者bcd） 然后执行操作 按q结束录制 播放的时候@a
+
+ln -s /usr/local/python3.6/bin/python3.6 /usr/bin/python3.6
+ln -s /usr/local/python3.6/bin/2to3-3.6 /usr/bin/2to3
+pip3.6 pip3
+pyvenv-3.6 pyvenv3
+
+python：
+	import sys
+	sys.argv  表示读取代码执行行的数据
+
+	#!/usr/bin/python （可执行程序）如果写在代码最顶端 表示可直接用python执行 方便在命令行少敲代码：
+	./xx.py
+	# chmod u+x cal.py 先在里面加入可执行
+	如果在python中输出中文需要在最顶端加入
+	#-*- coding:utf-8 -*-最顶端但是在python下面
+
+配置环境变量：PATH
+~目录下：
+vim. bash_profile 
+bin:/root 也就是所可执行路径设置到root目录下 在哪里启动快捷方式键都能运行
+echo 连接服务器就执行 后面跟要执行的命令
+开机自启：etc目录下
+rc.local 在最后一排加上需要启动的项目
+
+crontab -e 表示设定时执行： -l 表示列出当前用户有哪些计划任务
+* * * * * （分 时 日 月 星期）跟上执行命令 默认*表示所有
+例如2-3 4,6 4 5 * echo “hello” 表示每5月4日4点和5点的2到3分钟执行hello打印

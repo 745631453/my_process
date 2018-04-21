@@ -1,0 +1,164 @@
+ps - process state 查看进程 
+su - switch user 切换用户
+先histor  然后！加编号 可以回到历史某个命令
+**pwd - print working directory 打印当前目录
+
+**	ls - list directory contents 列出当前目录下的文件夹（如果写ls -a all表示列出隐藏文件夹）
+**	ls -l - long长格式查看 可以看到权限——r（读）w（写）x（执行execute）循序都是rwx一共3个
+
+> 跟文件名 表示输出重定向 例如ls > a.txt 那么将输出结果保存在a里面
+2> 错误重定向 表示将错误的参数丢进去
+
+sudo - 临时用管理员功能 前提要在etc中修改sudoers列表中添加用户名并且设置成ALL
+su - 切换成管理员模式
+
+reboot/init 6重启 shutdouwn/inint 0关机
+
+cd 表示切换到某个目录下   
+	如果是cd / 表示去到最顶层的根目录
+
+rm 跟名字- 删除文件
+	rm-f 跟名字 - 表示强制删除——不会问你确定删除吗
+	rm -r 跟名字 - 表示递归删除 进去后一直删除知道成为空文件然后再删除
+cat 跟名字- 查看文件内容
+
+	有任何事问男人——man（manual）跟命令 - 表示查看该命令意义 q退出
+	info表示比man还要详细的说明
+	或者命令后--help
+
+echo 跟要写的内容 - 回声命令
+	echo hello,word > hello.txt 加了>符号表示创建文件
+
+联网下载 wget 跟url地址 -O 改名字
+gzip/gunzip - 压缩和解压缩
+tar - together archive 多个文件合并成一个文件(归档)
+cvf归档**tar -cvf xxx.tar *.txt *.jpg 归档 在xxx。tar里面 把所有的txt和jpg放进去
+xvf解归档**tar -xvf xxx.tar 解归档tar里所有文件
+
+mkdir 创建文件夹
+
+关于文件的：
+touch x.txt - 创建文件
+cp - copy 复制  cp hello.txt abc/  表示复制文件到abc文件夹下 如果改名字 就在/后写名字就行
+mv - move 剪切  mv 名字 文件名/
+head 跟数字 - 表示看前几行 tail表示后几行
+diff - 比较两个文件有什么差别 比如查找错误  sort - 排序  uniq - 去重
+wc 跟名字 - 统计一个文件里的行数 单词数 字符数 
+file 跟名字 - 显示什么类型
+
+
+查找：
+which xxx- 找xxx的位置
+whereis xxx- 找xxx的路径
+	search 跟名字 查找源 yum srarch nginx
+grep 跟查找内容 - 查找 —— cat a.txt | grep hello 在txt里查找hello单词
+grep "ff" *.html .n -R 查找ff内容在所有后缀是html中并且显示行号
+| 表示加管道
+
+
+script (如果要命名空格后面跟例如hello.txt)- 表示开始录制脚本 记录所有做的事和结果 ———— exit结束
+
+wall/write 表示给用户发消息 如果是wall是全部 后者是指定的
+
+
+top 显示进程：
+
+	kill跟上进程号 表示杀掉进程
+	kill -9 跟上进程号 表示强杀
+
+chmod 修改权限
+	chmod u+x 文件名（表示同组可以执行）
+	chmod 755 文件名 （表示全部都可执行）—— 数字表示二进制 权限是ll查看 每3个表示一个数字（第一个自己，第二个同组，第三个其他） 如111 表示7 101表示5
+
+安装软件
+1包管理工具 - yum/rpm
+2安装程序 -xxx.bin
+3压缩文件 - 解压缩+配置环境变量
+4源代码-构建安装（c语言构建工具）
+
+
+****ps -aux | grep nginx 查看进程 后面查找具体想查找的
+
+
+建立自己的服务器：
+ 1.阿里云服务器
+ 	从yum 下载 nginx —— yum install nginx.x86_64 （这个名字通过yum search nginx查看）
+ 	卸载软件叫（remove） yum remove nginx
+ 	yum list installde 列出所有安装的
+ 	yum update更新
+ 然后建立网站 nginx
+ 将代码复制到该目录下/usr/share/nginx/html/
+ 重启是nginx -s reload
+ 2.虚拟机服务器
+ 	犹豫缺少某些配置文件需要先去安装
+ 到根目录 cd /
+ 然后cd etc 进入里面的repos.d文件
+ 然后联网下载 wget http://mirrors.aliyun.com/repo/ （里面Centos-7.repo文件 repo-7.repo）
+ yum clean all 清除干净
+ yum makecache 开始下载
+ 然后就和上面步骤一样
+
+
+防火墙 ：
+firewalld
+firewall-cmd --state 查看状态
+开启防火墙的一个端口：
+添加一个80端口：
+firewall-cmd --zone=public --add-port=80/tcp --permanent    （--permanent永久生效，没有此参数重启后失效）
+重新载入
+firewall-cmd --reload
+
+
+systemctl 系统控制  起服务start 停服务stop  重启restart 查看服务status
+例如systemctl start firewalld表示开启防火墙
+enable表示开机自启 取消就是disable
+
+
+数据库服务器mysql改名成mariadb因此查找需要这样：
+	yum search mariadb
+	安装 yum install mariadb-server（服务器） mariadb（客户端）
+	systemctl start mariadb 启动服务器
+	mysql -u root -p 启动客户端连接服务器 -u表示用户名 -p是密码
+	如果是链接别人的服务器那么要加-h 后面跟ip地址
+配置文件/etc/niginx.conf
+	关系型数据库
+	用二维表组织数据： 一行叫一个记录 一列表示对象的属性
+	有自己的语言SQL-结构化查询语言
+
+sql中的语句
+	show databases;查看数据库
+	use mysql;进入我的数据库
+	show tables;展示数据库所有的表格
+	select user, host,password from user查看来自user里面的内容
+	update user set host='%' where host='izwz92irzugtrmqonh8r9oz' and user='root';建立远程链接
+
+符号链接
+硬链接
+ln xxx文件 名字 例如 ln he.py ha（创建一个不增加空间的备份 相当于是一个栈空间 都引用同一个堆原来的删除了依然会在）
+软连接
+ln -s （创建一个快捷方式）
+
+
+网络链接
+	ifconfig 查看网络配置（现在都用ip）
+	ping 跟网址 c^+c退出  表示发包去服务器 
+	会占用服务器 因此如果用尽可能多的设备同时发ping包 会搞死服务器--因为服务器全处理你的包了——DDoS
+	netstat -nap 可以看到占用端口的ip地址
+
+	NAT: 网络地址转换  路由器端口映射 ：外网就可以访问内网
+	ssh root@跟公网地址 就可以链接别人的电脑
+	scp 跨网络复制
+	sftp 上传下载 —— get 文件名（表示下载他的东西）/ put给他东西
+
+redis：
+cd redis-3.2.11先去这个目录
+make && make install先要下载 源代码构建安装
+方法1：redis-server myredis.conf &——表示启动服务器加了&表示去后台运行
+方法2：redis-server myredis.conf > hello.log &——把所有输出放到文件里这样会显示进程号
+fg %1——把刚才放到的后台放到前台
+
+启动服务器：
+net start mysq157
+awk : 
+模式匹配处理 ps -aux | grep mysql | awk '{print $2}' | xargs kill
+xargs:能把一个命令传给另一个命令

@@ -1,0 +1,72 @@
+git
+
+1.下载克隆代码
+
+git clone https://github.com/745631453/test.git
+
+查看分支
+git branch 
+查看所有分支
+git branch -a
+
+删除分支
+git branch -D 分支明
+切换分支
+git checkout 名字
+删除远程分支
+git push delete 名字
+
+创建分支
+git checkout -b 分支名
+
+查看状态
+git status
+
+添加修改的数据到缓存区
+git add .全部
+git add 名字 单个
+
+提交修改到本地分支
+git commit -m ''
+
+合并add和commit操作
+git commit -am ''
+
+提交到远程分支上
+git push origin 分支名
+
+设置全局变量
+git config -- global user.email " "
+git config -- global user.name " "
+
+创建密钥 在用ssh的时候 以后在上传时候可以不用输密码了
+ssh-keygen -t rsa -C 帐号
+
+
+比较分支之间的不同
+git diff 分支 分支2
+
+合并
+git merge 分支名 （不同的话可以合并）
+
+给分支创建tag版本
+git tag -a 名字 -m
+git tag -a v1.001 -m'版本'
+推送版本号
+git push origin v1.001
+删除版本号
+git tag -d v1.001（名字）
+git push origin --delete tag v1.001
+
+
+缓存修改的代码
+git stash
+查看缓存
+git stash list
+还原缓存————需要切换到另一个分支
+git stash apply stash@｛x｝
+
+查看提交过的版本
+git long
+修改成某个版本
+git reset --hard （id）
