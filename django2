@@ -1,0 +1,45 @@
+创建admin超级管理员帐号和密码
+
+python manage.py createsuperuser
+
+在网页中直接创建到数据库中数据
+在app中的admin.py
+写入
+from stu.models import Student
+
+admin.site.register(Student)
+
+ORM对象关系映射——翻译机
+
+
+模型字段models.py中：
+CharField():字符串
+BooleanField():布尔类型 返回的是0，1
+
+DataField:年月日，存放日期 其中auto_now=True每次修改都记录时间  auto_now_add=True 表示只有第一次创建的时候才会设置时间
+DateTimeField:年月日 时分秒
+
+AutoField:自动增长
+
+DecimalField():decimal_places=小数后多少位/max_digits=总位数 例如
+decimal_places=1，max_digits=3 表示总为数3位小数1位类似99.9
+
+TestField:存储很长的信息
+
+IntegerField：存整数
+FloatField：存小数
+
+FileField:文件上传
+ImageField() ：上传图片 upload_to=''指定上传图片的路径
+
+模型字段中的参数
+default=   默认字段
+null  : 设置是否为空，针对数据库字段
+blank : 设置是否为空，针对表单提交字段———— 一般两个一起写
+unique=True表示唯一，不能有一样的数据
+primary key=True 设置主键
+
+
+
+
+
