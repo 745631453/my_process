@@ -1,0 +1,76 @@
+ # 通过扩展表的地址查找学生信息(filter返回的是迭代[0]表示切片返回一个｝，如果设置的表里是写的外键可以直接.键名字)
+    # stus = StudentInfo.objects.filter(stu_addr='大悦城')
+    # s = stus[0]
+    # st = Student.objects.filter(id=s.stu_id)
+    # 方法二
+    # stus = StudentInfo.objects.filter(stu_addr__contains='大悦城')
+    # s = stus[0]
+    # st = s.stu # sut表示models中的  不能用for循环看 注释也没用必须删除
+    （主键找外键）说明get，切片或者first都表示返回一个值 在写对应的html就不用用for循环
+    # stu = Student.objects.get(stu_name='太白')
+    # stus = stu.g
+
+
+
+# 通过学生表去查找拓展表信息（用小写_set  表示两个表连接起来 类似join）
+    # 查找姓名为xx的信息
+    stu = Student.objects.filter(stu_name='孙权').first()
+    st = StudentInfo.objects.filter(stu_id=stu.id)
+    # 方法二
+    # stu = Student.objects.filter(stu_name='孙权').first()
+    # 注意：studentinfo 小写
+    # st = stu.studentinfo_set.all()
+    # st = stu.stu_info #如果有related_name只能用这个方法
+
+
+
+
+html中
+<form action="/s/addstu/" method="post">
+    姓名：<input type="text" name="name">
+    性别：<input type="text" name="sex">
+    生日：<input type="date" name="birth">
+    语文：<input type="text" name="yuwen">
+    数学：<input type="text" name="shuxue">
+    <input type="submit" value="提交">
+
+
+
+ {% for u in stus（前面设置的参数views中的） %}
+    {{forloop.counter }}<!--计数-->
+    计数从0开始{{forloop.counter0 }}
+    <br>
+    计数从最后开始到1{{forloop.revcounter }}
+    计数从最后开始到0{{forloop.revcounter0 }}
+    <br>
+    {% ifequal forloop.counter 3 %}<!--equal 等于 -->
+    <a href="123">11</a>姓名：{{u.stu_name}}
+    <br>
+    {% else %}
+        姓名：{{u.stu_name}}
+    <br>
+    {% endifequal %}
+
+    性别：
+    {% if u.stu_sex %}
+        男
+    {% else %}
+        女
+    {% endif %}
+    生日：{{u.stu_birth}}
+    时间：{{u.stu_create_time}}
+    语文：{{u.stu_yuwen | add:10}}
+    数学：{{u.stu_shuxue}}
+    <br>
+    {% empty %} <!--如果没有返回值 就返回该信息-->
+        没有信息
+    {% endfor %}
+
+
+
+挖坑
+  {% block contain %} {% endblock %}
+
+
+插入图片
+<img src="/static/images/xxxx.jpg">
