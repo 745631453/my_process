@@ -1,0 +1,77 @@
+html中
+
+过滤器 |
+1.date
+y年
+m月
+d日
+
+h时 h12小时 H 24小时
+m分
+s秒
+
+upper 变大写
+乘法
+widthratio 数 分母 分子
+divisibleby：数字 判断是否被数字整除 如果能返回True
+
+{% comment %} 多行注释
+
+获取点击的数据
+将需要的参数传入（\d+）中 然后就def中提取出来使用
+
+    url(r'^cla/',include('sst.urls',namespace='s'))
+    url(r'^stu/(\d+)/', views.show,name='add')
+
+<a href="{% url 's:add' c.id %}">
+
+def show(request,a):
+    #通过request获取点击的参数
+    #a = request.GET.get('class_id')
+    #url传参方法：
+    s = MyStudent.objects.filter(g_id=a)
+    return render(request,'stud.html',{'stu':s})
+
+
+{% url 'namespace（工程urls里别名设置）:name（app的urls别名设置）' 提供的需要的参数 %}
+
+跳转页面：
+return HttpResponseRedirect(
+        reverse('namespace:name', kwargs={'c（参数名）': a})
+    )
+传入参数
+(\d+)
+urls中指定参数
+?P<参数名>\d+
+    url(r'^tiao/(?P<c（参数名）>\d+)/', views.redirectStu,name='tt'),
+
+传多个参数
+url(r'^duo/(\d+)/(\d+)/(\d+)/',views.selStu)
+
+
+
+
+如果想返回404 500等界面需要修改settings：
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+工程目录urls：
+from grade.views import page_not_found,server_error
+handler404 = page_not_found
+handler500 = server_error
+
+def page_not_found(request):
+    return render(request, '404.html')
+
+
+def server_error(request):
+    return render(request, '500.html')
+
+
+
+请求
+post 提交数据
+get 提交数据在url上
+put 更新全部数据
+patch 更新局部数据
+delete 删除
