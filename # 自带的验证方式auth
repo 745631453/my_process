@@ -1,0 +1,28 @@
+# 自带的验证方式auth
+1.需要导入系统自带的user表，然后需要注册帐号
+from django.contrib.auth.models import User
+
+2.然后设置验证方式
+def djlogin(request):
+    if request.method == 'GET':
+        return render(request, 'longin.html')
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        password = request.POST.get('password')
+        # 验证用户密码和账户，通过的话返回user对象
+        user = auth.authenticate(username=name, password=password)
+        if user:
+            # 验证成功
+            auth.login(request, user)
+            return HttpResponseRedirect('/st/index/')
+        else:
+            return render(request, 'index.html')
+
+
+urls中写：表示需要验证才能进去（省略中间键）
+login_required（）
+
+# 没登录的时候跳转页面，以至于不会报错
+setting中
+LOGIN_URL = '/uau/djlo/'

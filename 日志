@@ -1,0 +1,87 @@
+日志
+1.
+四个组成
+loggers 用来处理传入信息
+handlers 用来处理信息
+filters 过滤loggers传递给handlers的信息
+formatters 格式化，将我们需要保存到日志文件中的信息进行统一格式化
+2.
+CRITICAL>ERROR>WARNING>INFO>DEBUG
+
+critical: 重大的bug
+error：系统有错误
+warring：警告
+info：正常
+debug：调试信息
+
+3.
+# 创建日志文件夹路径
+LOG_PATH = os.path.join(BASE_DIR, 'log')
+# 如过地址不存在，则自动创建log文件夹
+if not os.path.isdir(LOG_PATH):
+    os.mkdir(LOG_PATH)
+4.
+LOGGING = {
+    # 规定只能这样写
+    'version': 1,
+    # True表示禁用loggers
+    'disable_existing_loggers': False,
+    # 指定文件写入的格式
+    'formatters': {
+        'default': {
+            'format': '%(levelno)s %(pathname)s %(funcName)s %(module)s %(created)s %(message)s'
+        },
+        'simple': {
+            'format': '%(levelno)s %(model)s %(created)s %(message)s'
+        }
+    },
+
+    'handlers': {
+        'stu_hanlders': {
+            'level': 'DEBUG',
+            # 日志文件指定为多大(5M)， 超过大小(5M)重新命名，然后写新的日志文件
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 5 * 1024 * 1024,
+            # 储存到的文件地址
+            'filename': '%s/log.txt' % LOG_PATH,
+            'formatter': 'default'
+        },
+        'uauth_handlers': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 5 * 1024 * 1024,
+            'filename': '%s/uauth_log.txt' % LOG_PATH,
+            'formatter': 'simple'
+        }
+    },
+        
+    'loggers': {
+        'stu': {
+            'handlers': ['stu_handlers'],
+            'level': 'INFO'
+        },
+        'auth': {
+            'handlers': ['uauth_handlers'],
+            'level': 'INFO'
+        }
+    }
+}
+5.
+REST：是所有web都遵守的架构设计指导原则
+restful 风格
+	1.api定义规范
+	http://xxx.com/api/
+	2. 资源
+
+class Aba(mixins.ListModelMixin,
+          mixins.RetrieveModelMixin,
+          mixins.UpdateModelMixin,
+          mixins.DestroyModelMixin,
+          mixins.CreateModelMixin,
+          viewsets.GenericViewSet):
+    # 查询所有信息
+    queryset = Student.objects.all()
+    # 序列化
+    serializer_class = StudentSerializer
+
+**** mixins.RetrieveModelMixin如果没有写就不能在浏览器中查到
