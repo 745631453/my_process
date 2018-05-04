@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for i in stu %}
+    姓名：{{ i.s.s_name }}
+    电话：{{ i.s.s_tel }}
+    地址:{{ i.i_addr }}
+    {% if i.i_image %}
+    头像：
+    <img src="/media/{{ i.i_image }}" height="100px" width="100px">
+    {% endif %}
+    <br>
+{% endfor %}
+<h4>一共{{ stu.paginator.num_pages }}页 {{ stu.paginator.count }}条信息</h4>
+{%  for a in stu.paginator.page_range %}
+    <a href="/st/pag/?page_id={{ a }}">{{ a }}</a>
+{% endfor %}
+{% if stu.has_previous %}
+    <a href="/st/pag/?page_id={{ stu.previous_page_number }}">上一页</a>
+{% endif %}
+当前第{{ stu.number }}页
+{% if stu.has_next %}
+    <a href="/st/pag/?page_id={{ stu.next_page_number }}">下一页</a>
+{% endif %}
+
+<h4>-------------------------------------------</h4>
+<a href="{% url 's:add'  %}">添加学生</a>
+<a href="/uau/out/">退出登录</a>
+</body>
+</html>

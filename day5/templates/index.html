@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for i in stuinfo %}
+    姓名：{{ i.s.s_name }}
+    电话：{{ i.s.s_tel }}
+    地址:{{ i.i_addr }}
+    {% if i.i_image %}
+    头像：
+    <img src="/media/{{ i.i_image }}" height="100px" width="100px">
+    {% endif %}
+    <br>
+{% endfor %}
+<h4>-------------------------------------------</h4>
+<a href="{% url 's:add'  %}">添加学生</a>
+<a href="/uau/out/">退出登录</a>
+<a href="/uau/djout/">管理员退出登录</a>
+</body>
+</html>

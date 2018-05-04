@@ -1,0 +1,11 @@
+20 D:/virtual/work5/day5\stu\views.py index views 1525331235.6533546 获取学生信息成功
+20 index 2018-05-03 15:29:03,752 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 15:47:56,929 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 15:48:30,872 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:09:18,579 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:09:49,416 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:54:42,017 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:54:51,755 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:55:01,332 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:55:10,358 url:/st/index/ method:GET 获取学生信息成功
+20 index 2018-05-03 16:55:29,483 url:/st/index/ method:GET 获取学生信息成功
