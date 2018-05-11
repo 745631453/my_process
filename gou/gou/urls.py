@@ -15,10 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
+
+from Ind import views
+from gou import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^ind/', include('Ind.urls'))
+    url(r'^ind/', include('Ind.urls', namespace='axf')),
+    url(r'^$', views.Home),
+
+
 ]
 
 from django.contrib.staticfiles.urls import static

@@ -25,7 +25,7 @@
                 {% endif %}
             <!--如果登录，展示姓名-->
                 {% if  user.id %}
-                <p>{{ user.username }}</p>
+                <p>{{ user.usernam }}</p>
             <!--或者展示登录的链接-->
                 {% else %}
                 <a href="/ind/log/">登录</a>
@@ -39,7 +39,7 @@
                 {% if user.id %}
                 {% else %}
                 <div id="regis">
-                    <a href="">注册</a>
+                    <a href="/ind/reg/">注册</a>
                 </div>
             <!--判断结束-->
                 {% endif %}
@@ -54,6 +54,7 @@
             <div id="nav">
 
                 <ul>
+                    <a href="/ind/orderwait/">
                     <li>
                         <dl>
                             <dt><span id="wait_pay_list" class="glyphicon glyphicon-usd"></span>
@@ -65,6 +66,8 @@
                         </dl>
 
                     </li>
+                    </a>
+                    <a href="/ind/orderpayed/">
                     <li>
                         <dl>
                             <dt><span id="order_payed_list" class="glyphicon glyphicon-envelope"></span>
@@ -76,6 +79,7 @@
                         </dl>
 
                     </li>
+                    </a>
                     <li>
                         <dl>
                             <dt><span class="glyphicon glyphicon-pencil"></span></dt>

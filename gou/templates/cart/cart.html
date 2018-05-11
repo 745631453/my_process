@@ -56,29 +56,32 @@
 
                     <ul>
                         <!--购物车信息展示-->
+                        {% for i in a %}
                             <li class="menuList" cartid="">
                                 <div class="confirm">
-                                    <span class="is_choose" is_select="">
-
-                                            <span>√</span>
-
-                                            <span></span>
-
+                                    <span id="nume{{ i.goods_id }}">
+                                            {% if i.is_select %}
+                                            <span onclick="changecheck({{ i.goods_id }})">√</span>
+                                            {% else %}
+                                            <span onclick="changecheck({{ i.goods_id }})">x</span>
+                                            {% endif %}
 
                                     </span>
                                 </div>
                                 <a href="#">
-                                    <img src="" alt="">
-                                    <p></p>
+                                    <img src="{{ i.goods.productimg }}" alt="">
+                                    <p>{{ i.goods.productlongname }}</p>
+                                    <p>单价：{{ i.goods.price }} 合计：</p>
                                 </a>
                                 <section>
-                                    <button class="subShopping">-</button>
-                                    <span></span>
-                                    <button class="addShopping">+</button>
+                                    {% csrf_token %}
+                                    <button onclick="delshop({{ i.goods_id }})" >-</button>
+                                    <span id="num{{ i.goods_id }}">{{ i.c_num }}</span>
+                                    <button onclick="addshop({{ i.goods_id }})" >+</button>
                                 </section>
                             </li>
                         <!--购物车数据处理结束-->
-
+                        {% endfor %}
 
                         <li class="payTheBill">
 
@@ -94,10 +97,10 @@
 
                             <p>
                                 <span>全选</span>
-                                <span>总价:</span>
+                                <span id="all123">总价:</span>
                             </p>
 
-                            <span id="generate_order">下单</span>
+                            <span><a href="/ind/xiadan/">下单</a></span>
 
                         </li>
 

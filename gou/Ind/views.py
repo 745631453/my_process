@@ -1,10 +1,12 @@
 import random
 from datetime import datetime, timedelta
 import time
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
+
 from Ind.models import MainLun, MainDao, MainMustBuy, MainShop, MainShow, MinModel \
-    , MineModel
+    , MineModel, FoodType, Goods, OrderGoodsModel, CartModel, OrderModel
 
 
 # 首页展示
@@ -108,10 +110,13 @@ def Register(request):
 # 购物车页面
 def Car(request):
     if request.method == 'GET':
-        if not request.user:
-            return HttpResponseRedirect('/ind/log/')
+        user = request.user
+        if user.id:
+            a = CartModel.objects.filter(user=user)
+
+            return render(request, 'cart/cart.html', {'a': a})
         else:
-            return render(request, 'cart/cart.html')
+            return HttpResponseRedirect('/ind/log/')
 
 
 # 我的 页面
@@ -140,6 +145,178 @@ def Mine(request):
         return render(request, 'mine/mine.html', date)
 
 
+# 默认传参至商品展示
 def Market(request):
+    return HttpResponseRedirect(reverse('axf:market', args=('104749', '0', '0')))
+
+
+# 闪购商品展示
+def use_Market(request, a, b, c):
     if request.method == 'GET':
-        return render(request, 'market/market.html')
+        date = {}
+        # 获取类型
+        foo = FoodType.objects.all()
+        # 获取商品
+        if b == '0':
+            good = Goods.objects.filter(categoryid=a)
+        else:
+            good = Goods.objects.filter(childcid=b, categoryid=a)
+        # 获取分类
+        fenlei = []
+        ff = FoodType.objects.filter(typeid=a).first()
+        ff_list = ff.childtynames.split('#')
+        for lis in ff_list:
+            fenlei.append(lis.split(':'))
+        # 定义排序原则
+        if c == '0':
+            pass
+        elif c == '1':
+            good = good.order_by('productnum')
+        elif c == '2':
+            good = good.order_by('price')
+        elif c == '3':
+            good = good.order_by('-price')
+
+        date['food'] = foo
+        date['tpid'] = a
+        date['cid'] = b
+        date['good'] = good
+        date['fenlei'] = fenlei
+
+        return render(request, 'market/market.html', date)
+
+
+# 静态页面添加
+def addshop(requset):
+    if requset.method == 'POST':
+        user = requset.user
+        date = {
+            'msg': '成功',
+            'code': 200
+        }
+        if user.id:
+            goods_id = requset.POST.get('goods_id')
+            add = CartModel.objects.filter(user=user, goods_id=goods_id).first()
+            if add:
+                alln = CartModel.objects.filter(user=user,is_select=1)
+                allnum = 0
+                for i in alln:
+                    a = float(i.goods.price)
+                    b = i.c_num
+                    allnum += a * b
+                add.c_num += 1
+                add.save()
+                date['c_num'] = add.c_num
+                date['allnum'] = allnum
+            else:
+                CartModel.objects.create(user=user, goods_id=goods_id, c_num=1)
+                date['c_num'] = 1
+        return JsonResponse(date)
+
+
+# 静态页面减少数量
+def delshop(requset):
+    if requset.method == 'POST':
+        user = requset.user
+        date = {
+            'msg': '成功',
+            'code': 200
+        }
+        if user.id:
+            goods_id = requset.POST.get('goods_id')
+            dele = CartModel.objects.filter(user=user, goods_id=goods_id).first()
+            if dele:
+                if dele.c_num > 0:
+                    if dele.c_num == 1:
+                        dele.delete()
+                        date['c_num'] = 0
+                    else:
+                        dele.c_num -= 1
+                        dele.save()
+                        date['c_num'] = dele.c_num
+        return JsonResponse(date)
+
+
+# 购物车中勾选按钮
+def changecheck(request):
+    if request.method == 'POST':
+        date = {}
+        user = request.user
+        if user.id:
+            gid = request.POST.get('goods_id')
+            de = CartModel.objects.filter(goods_id=gid).first()
+            if de.is_select:
+                de.is_select = False
+            else:
+                de.is_select = True
+            de.save()
+            date = {'changecheck': de.is_select}
+        return JsonResponse(date)
+
+
+# 创建订单
+def order(request):
+    if request.method == 'GET':
+        user = request.user
+        cart = CartModel.objects.filter(is_select=True)
+        if cart:
+            orderid = OrderModel.objects.create(user=user, o_status=0)
+            for i in cart:
+                OrderGoodsModel.objects.create(goods=i.goods,
+                                               order=orderid,
+                                               goods_num=i.c_num,
+                                               )
+                i.delete()
+            return HttpResponseRedirect(reverse('axf:Ordercreate', args=(orderid.id,)))
+        else:
+            return HttpResponseRedirect(reverse('axf:ma'))
+
+
+# 付款页面
+def Ordercreate(request, id):
+    if request.method == 'GET':
+        orders = OrderGoodsModel.objects.filter(order_id=id)
+        order1 = orders.first().order_id
+        date = {
+            'orders': orders,
+            'order': order1,
+        }
+
+        return render(request, 'order/order_info.html', date)
+
+
+# 将付款状态调制待收货
+def Complay(request, orderid):
+    if request.method == 'GET':
+        OrderModel.objects.filter(pk=orderid).update(o_status=1)
+        return HttpResponseRedirect(reverse('axf:home'))
+
+
+# 代付款页面
+def OrderWait(request):
+    if request.method == 'GET':
+        wait = OrderModel.objects.filter(o_status=0)
+        date = {
+            'wait': wait
+        }
+
+        return render(request, 'order/order_list_wait_pay.html', date)
+
+
+# 待收货页面
+def OrderPayed(request):
+    if request.method == 'GET':
+        payed = OrderModel.objects.filter(o_status=1)
+        date = {
+            'wait': payed
+        }
+
+        return render(request, 'order/order_list_payed.html', date)
+
+
+def Delorder(request, o_id):
+    if request.method == 'GET':
+        OrderGoodsModel.objects.filter(order=o_id).delete()
+        OrderModel.objects.filter(pk=o_id).delete()
+
+        return HttpResponseRedirect('/ind/orderwait/')

@@ -133,7 +133,7 @@ class CartModel(models.Model):
 class OrderModel(models.Model):
     # 订单
     user = models.ForeignKey(MinModel)
-    o_num = models.CharField(max_length=64)  # 数量
+    o_num = models.CharField(max_length=64)
     o_status = models.IntegerField(default=0)  # 状态
     o_create = models.DateTimeField(auto_now_add=True)  # 创建时间
 
