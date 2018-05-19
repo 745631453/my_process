@@ -1,0 +1,57 @@
+Flask3
+
+挖坑
+django：
+1.  <link rel="stylesheet" href="/static/css/index.css">
+2.  {% load static %}
+    <link rel="stylesheet" href="{% static, 'css/index.css' %}">
+flask
+1. <link rel="stylesheet" href="/static/css/index.css">
+2. <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }} ">
+
+{{ loop.first }}表示第一个为true
+
+传递样式 需要用|过滤
+content_h2 = '<h2>哎哟不错</h2>'
+
+    return render_template('scores.html',
+                           con=content_h2)
+1.显示样式safe
+<li>{{ con|safe }}</li>
+2.不现实样式，但是传递
+<li>{{ con|striptags }}</li>
+图1
+
+
+前端的数据库导入导出
+1.写入
+    {% macro say() %}
+        <h3>23333</h3>
+    {% endmacro %}
+
+2.导出使用
+{% from 'show.html' import say %}
+{{ say() }}
+
+数据库
+
+pip install flask-sqlalchemy
+pip install pymysql
+
+设置数据库
+ primary_key 主键
+ autoincrement 自增
+ unique 唯一
+ default 默认值
+Integer 整形
+String字符串
+
+__tablename__ = 'student' 数据库名字
+配置数据库
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:147258@localhost:3306/flask3'
+
+
+
+
+查找出来的不是列表，需要加。first
+

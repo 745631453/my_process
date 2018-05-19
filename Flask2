@@ -1,0 +1,50 @@
+Flask2
+获取参数
+from flask import request
+request.
+args ———— GET 请求获取参数
+form ———— POST 请求获取参数
+files ———— 图片，文件
+method ———— 请求方式
+
+args，form里面的字典可以重复
+图2，3
+
+蓝图前缀
+
+url_prefix=
+app.register_blueprint(blueprint=blue, url_prefix='/hello')
+图4，5
+
+response响应
+传入自定义的状态码HTTPRESPONSE
+import make_response
+ response = make_response('<h1>酷</h1>')
+
+    return response
+
+redirect
+传入的是urls路径
+import redirect, url_for
+@blue.route('/redi/')
+def make_redi():
+    # 方法一——直接跟路径
+    # return redirect('/hello/index/')
+    # 方法二——跟的是名字，第一个参数是蓝图名字，第二个是方法名
+    return redirect(url_for('first.inde'))
+
+session 
+
+安装
+pip install flask-session
+pip install redis
+
+使用数据库
+
+SESSION_TYPE类型
+redis
+mongodb
+memcached
+sqlchemy
+
+

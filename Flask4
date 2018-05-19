@@ -1,0 +1,102 @@
+Flask4
+    def __init__(self,name,age):
+
+        self.s_name = name
+        self.s_age = age
+
+    if request.method == 'POST':
+
+        name = request.form.get('uname')
+        age = request.form.get('age')
+
+        stue = Student(name, age)
+        db.session.add(stue)
+        db.session.commit()
+        return redirect(url_for('stu.creatstu'))
+
+运算符
+filter（模型名。字段。运算符）
+__lt__ 小于
+__le__ 小于等于
+__gt__ 大于
+__ge__大于等于
+.in_（[条件]）包涵
+from sqlalchemy import and_, or_, not_
+    stus = Student.query.filter(or_(Student.s_age == 10, Student.s_name == '飞帅'))
+
+
+
+如果要排序order_by（）
+那么直接对结果排序，不需要加.all，因为列表无法排序
+
+limit（） 截取信息
+offset（） 跳过信息
+
+
+分页
+paginate对象
+
+pages一共多少页
+page当前
+has_prev上一页
+has_next下一页
+iter_pages() 所有页数
+
+
+主键外键
+需要注意的是外键需要写小写，类型要写在前面
+	# 链接外键
+    s_g = db.Column(db.Integer, db.ForeignKey('grade.g_id'), nullable=True)
+
+db参数导入同一个地方不能单独写
+	# 主键设置，backref表示返回参数用法
+    students = db.relationship('Student', backref='stu', lazy=True)
+
+
+多对多
+需要自己创建一个关联表
+
+sc = db.Table('sc',
+              db.Column('ss_id', db.Integer, db.ForeignKey('student.s_id'), primary_key=True),
+              db.Column('cc_id', db.Integer, db.ForeignKey('course.c_id'), primary_key=True)
+              )
+然后另一个表链接他
+students = db.relationship('Student', secondary=sc, backref='cou')
+
+创建外键表 append
+
+        stuq = Student.query.get(ss)
+        couq = Course.query.get(cc)
+
+        couq.students.append(stuq)
+        db.session.add(couq)
+        db.session.commit()
+
+删除 remove
+    couq.students.remove(stuq)
+    db.session.commit()
+
+美化配置
+
+
+图形界面dbug
+安装
+pip install flask-debugtoolbar
+
+传入借口json格式
+pip install Flask-RESTful
+
+class Hello(Resource):
+
+    def get(self):
+        stuq = Student.query.get(10)
+        return {'name': stuq.s_name,
+                'age'}
+
+
+api.add_resource(Hello, '/api/hello/')
+
+
+返回json序列化
+安装
+pip install flask-marshmallow
