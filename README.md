@@ -1,5 +1,8 @@
-# test
-it
+# 去点击左上角通过分支查看不同技术
+
+# 更多参考csdn：https://blog.csdn.net/qq_41781877
+
+## git简介：
 
 1.下载克隆代码
 
